@@ -6,11 +6,12 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-
+const END_POINT = "https://dixit-one.vercel.app";
+//const END_POINT = 'http://localhost:5173';
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://dixit-one.vercel.app",
+    origin: END_POINT,
     methods: ["GET", "POST"]
   }
 }) 
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
 
 const PORT = 5000;
 
-const deck = ['card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8', 'card9', 'card10'];
+
 
 const rooms = {}; // To keep track of rooms and players
 
@@ -81,7 +82,7 @@ io.on('connect', (socket) => {
     socket.on('startGame', (roomName, callback) => {
         const userRegistry = {};
         const room = rooms[roomName];
-        if (room && room.players.length >= 1) {
+        if (room && room.players.length >= 3) {
             room.gameState.started = true;
             room.players.forEach((key, index) => {
                 userRegistry[key] = room.names[index];
@@ -97,25 +98,28 @@ io.on('connect', (socket) => {
     
     //shuffle cards
     const shuffle = (array) => {
+        
         for(let i = array.length - 1; i>0; i--){
             const j = Math.floor(Math.random() * (i));
             const temp = array[j];
             array[j] = array[i];
             array[i] = temp;
         }
+        console.log('array', array);
         return array;
     }
 
     const dealCards = (roomName, players) => {
+        const deck = ['card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8', 'card9', 'card10'];
+        
         const cardsDealt = {};
         const shuffledCards = shuffle(deck);
-        
         const numCardsPerPlayer = Math.floor(deck.length / Object.keys(players).length);
         for(let playerId in players){
             
             cardsDealt[players[playerId]] = shuffledCards.splice(0, numCardsPerPlayer);
         }
-        
+        console.log(cardsDealt);
         io.to(roomName).emit('dealCards', cardsDealt);
     }
 

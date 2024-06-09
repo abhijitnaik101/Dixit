@@ -21,9 +21,10 @@ const Cards = ({ callback }) => {
     }
 
     return (
-        <div className="h-full w-full backdrop-blur-md text-white flex flex-col items-center">
-            <p>card : {card}</p>
-            <div className="h-full w-full md:w-3/4 flex justify-start overflow-x-auto scroll-blue-sharp">
+        <div className="h-full w-full bg-cover bg-white bg-opacity-15 backdrop-blur-sm text-white flex flex-col items-center">
+            {card && <div className="absolute -top-12 z-10 scale-[40%]"><Card card={cardData[card]}/></div>}
+            <p className="p-5 w-full">Your Card: </p>
+            <div className="h-full w-11/12  md:w-3/4 flex justify-start items-end overflow-x-auto scroll-blue-sharp">
                 {
                     deck.map((card, index) =>
                         <button key={index} onClick={() => chooseCard(card)} ><Card card={cardData[card]}/></button>

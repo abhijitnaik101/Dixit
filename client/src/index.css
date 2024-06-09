@@ -9,7 +9,7 @@
 
 .scroll-blue-sharp::-webkit-scrollbar-thumb{
     border-radius: 0px;
-    background-color: darkslateblue;
+    background-color: lightsalmon;
 }
 .no-scroll::-webkit-scrollbar-track{
     display:none;

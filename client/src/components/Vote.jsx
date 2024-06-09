@@ -8,6 +8,7 @@ const Vote = () => {
   const [room] = useRecoilState(roomState);
   const [game] = useRecoilState(gameState);
   const [vote, setVote] = useState('');
+  const [cardNumber, setCardNumber] = useState(0);
 
   const submitVote = () => {
     socket.emit('voteCard', room, vote, (response) => {
@@ -16,20 +17,27 @@ const Vote = () => {
       }
     });
   };
+  const chooseVote = (card, index) => {
+    setVote(card);
+    setCardNumber(index);
+  }
     return (
       <div className='w-full bg-indigo-950 flex flex-col items-center text-white'>
         {
           (game.submittedCards.length == 0) ? 
-          <div>Waiting for others to submit cards.</div>
+            <div>Waiting for others to submit cards.</div>
             :
             <div className='flex w-full items-center justify-between'>
-              <div className='px-5 py-2 h-10 bg-indigo-500'>Vote: {vote}</div>
+              <div className='py-2 h-10 max-w-24 border-2 border-black flex  items-center'>
+                <span className='bg-orange-400 border-y-2 border-black p-2 h-10'>Vote</span>
+                <span className='bg-orange-500 border-y-2 border-black p-2 h-10'>{cardNumber}</span>
+                </div>
               <div className='flex justify-start overflow-x-scroll no-scroll'>
                 {game.submittedCards.map((card, index) => (
-                  <button key={index} onClick={() => setVote(card.card)} className='mx-1 h-10 w-10 rounded-full bg-white flex justify-center items-center hover:bg-slate-300 text-black'>{index + 1}</button>
+                  <button key={index} onClick={() => chooseVote(card.card, index+1)} className='mx-1 h-10 w-10 rounded-full bg-indigo-500 flex justify-center items-center hover:bg-indigo-600 text-white'>{index + 1}</button>
                 ))}
               </div>
-              <button onClick={submitVote} className='px-5 h-10 bg-blue-500 hover:bg-blue-600'>Submit</button>
+              <button onClick={submitVote} className='px-5 h-10 border-2 border-black bg-orange-400 hover:bg-orange-500'>Submit</button>
             </div>
         }
       </div>

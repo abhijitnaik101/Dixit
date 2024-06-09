@@ -119,38 +119,42 @@ const Game = () => {
           )}
 
           {(game.started) &&
-            <div className='h-full w-full flex flex-col'>
-              <div className='h-1/2 w-full bg-indigo-600 contain-content overflow-clip flex flex-col justify-center items-center text-white'>
-                <p>Score board</p>
-                <div>
-                  {Object.entries(game.playersData).map(([id, score]) => <p>{usersRegistry[id]}: {score}</p>)}
+            <div className='h-full w-full flex flex-col items-center'>
+              <div className='h-1/2 w-11/12 mb-2 bg-yellow-400 rounded-md contain-content border-2 border-white overflow-clip flex flex-col justify-center items-center text-white'>
+                <p className='w-4/5 text-center text-black'>Score board</p>
+                <div className='w-4/5 h-3/5 p-5 bg-yellow-500 text-black overflow-y-scroll no-scroll'>
+                  {Object.entries(game.playersData).map(([id, score]) => 
+                    <div className='flex justify-between mb-1'>
+                      <span className='w-2/3 text-center mr-1 bg-white'>{usersRegistry[id]}</span><span className='w-1/3 text-center bg-white'>{score}</span>
+                    </div>)
+                  }
                 </div>
                 <div className='flex flex-col items-center'>
-                <h2>Story: {game.story}</h2>
-                <div>Card(secret): {game.storyCard}</div>
-
-                <div className='flex'>
-                  {game.submittedCards.map((card, index) => 
+                <h2 className='text-lg font-bold text-black underline'>riddle </h2>
+                {game.story && <p className='px-2 rounded-md text-base text-yellow-600 italic bg-yellow-300'>{game.story}</p>}
+                {game.submittedCards.length != 0 &&
+                  <div className='absolute flex justify-center items-center h-full w-full top-0 bg-orange-400 bg-opacity-50 backdrop-blur-sm'>
+                  <div className='flex'>
+                  {game.submittedCards.map((card, index) =>
                     <Card key={index} card={cardData[card.card]}/>
                   )}
+                  </div>
                 </div>
+                }
               </div>
               </div>
-              
               {
                 (player.id == game.storyteller) ?
-                  <div className='h-1/2 md:h-2/5 flex flex-col justify-evenly items-center'>
-
+                  <div className='h-1/2 md:h-3/5 w-full flex flex-col justify-evenly items-center'>
                     <div className='flex h-10 w-full justify-center'>
                       <input type="text" value={story} onChange={(e) => setStory(e.target.value)} placeholder="Story"
-                        className='p-2 px-4 w-full' />
-                        <button onClick={submitStory} className='h-10 w-20  bg-blue-500 hover:bg-blue-600 text-white'>Send</button>
+                        className='p-2 px-4 w-4/5'/>
+                        <button onClick={submitStory} className='h-10 w-20  bg-yellow-300 border-2 border-black hover:bg-yellow-400 text-black'>Send</button>
                     </div>
                     <Cards callback={setCard} />
                   </div>
                   :
-                  <div className='h-1/3 md:h-5/6 md:w-1/2 '>
-                    
+                  <div className='h-1/2 md:h-3/5 w-full flex flex-col justify-evenly items-center'>
                     <div className='h-max w-full bg-yellow-300'>
                       {game.started ?
                         <div className=''>

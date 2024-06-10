@@ -105,7 +105,7 @@ io.on('connect', (socket) => {
             array[j] = array[i];
             array[i] = temp;
         }
-        console.log('array', array);
+        
         return array;
     }
 
@@ -119,7 +119,7 @@ io.on('connect', (socket) => {
             
             cardsDealt[players[playerId]] = shuffledCards.splice(0, numCardsPerPlayer);
         }
-        console.log(cardsDealt);
+        
         io.to(roomName).emit('dealCards', cardsDealt);
     }
 
@@ -157,7 +157,7 @@ io.on('connect', (socket) => {
     socket.on('submitStory', (roomName, story, storyCard, callback) => {
         const room = rooms[roomName];
         const gameState = room.gameState;
-        if (gameState.storyteller === socket.id) {
+        if (gameState.storyteller === socket.id && storyCard != '') {
             gameState.story = story;
             gameState.storyCard = storyCard;
             io.to(roomName).emit('newStory', { story, storyteller: socket.id, storyCard });
@@ -171,7 +171,7 @@ io.on('connect', (socket) => {
     socket.on('submitCard', (roomName, card, callback) => {
         const room = rooms[roomName];
         const gameState = room.gameState;
-        if (gameState.started && socket.id !== gameState.storyteller) {
+        if (gameState.started && socket.id !== gameState.storyteller && card != '') {
             rooms[roomName].gameState.submittedCards.push({ player: socket.id, card });
             if (rooms[roomName].gameState.submittedCards.length === room.players.length - 1) {
                 rooms[roomName].gameState.submittedCards.push({ player: gameState.storyteller, card: gameState.storyCard });
@@ -206,6 +206,9 @@ io.on('connect', (socket) => {
         const room = rooms[roomName];
         const gameState = room.gameState;
         const scores = calculateScores(room);
+        //Message players about the result of their choice
+        //io = guessersResult -> scores
+        io.to(roomName).emit('roundResults', scores);
         // Update player scores
         for (const playerId in scores) {
             room.gameState.playersData[playerId] += scores[playerId];
@@ -235,7 +238,7 @@ io.on('connect', (socket) => {
                 if(card === storyCard){
                     scores[id] = 2;
                 } else {
-                    const playerId = submittedCards.find(obj => obj['card'] == card).player; //returns playerID 
+                    const playerId = submittedCards.find(obj => obj['card'] === card).player; //returns playerID 
                     votedGuessers[playerId] = 1; 
                 }
             }

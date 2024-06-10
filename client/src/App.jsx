@@ -13,9 +13,9 @@ const App = () => {
   const game = useRecoilValue(gameState);
 
   return (
-    <div className="h-screen w-full md:p-5 bg-cover bg-orange-400 bg-[url('./assets/desertDay1.jpeg')] bg-repeat flex flex-col justify-center items-center">
-      <h1 className='font-bold text-orange-800 font-mono'>Dixit Game</h1>
-      <p className='font-bold text-orange-800 font-mono'>room : {room}</p>
+    <div className="h-screen w-full md:p-5 bg-cover bg-[url('./vectorSpace2_bg.jpeg')] bg-repeat flex flex-col justify-center items-center">
+      <h1 className='font-bold text-indigo-500 font-mono'>Dixit Game</h1>
+      <p className='font-bold text-indigo-500 font-mono'>room : {room}</p>
       {!room 
       ? ( <RoomSetup />) 
       : (<Game />)}

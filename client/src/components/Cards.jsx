@@ -21,7 +21,7 @@ const Cards = ({ callback }) => {
     }
 
     return (
-        <div className="h-full w-full bg-cover bg-white bg-opacity-15 backdrop-blur-sm text-white flex flex-col items-center">
+        <div className="h-full w-full bg-cover bg-black bg-opacity-45 backdrop-blur-sm text-white flex flex-col items-center">
             {card && <div className="absolute -top-12 z-10 scale-[40%]"><Card card={cardData[card]}/></div>}
             <p className="p-5 w-full">Your Card: </p>
             <div className="h-full w-11/12  md:w-3/4 flex justify-start items-end overflow-x-auto scroll-blue-sharp">

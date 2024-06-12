@@ -7,8 +7,8 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-//const END_POINT = "https://dixit-one.vercel.app";
-const END_POINT = 'http://localhost:5173';
+const END_POINT = "https://dixit-one.vercel.app";
+//const END_POINT = 'http://localhost:5173';
 
 
 const server = http.createServer(app);

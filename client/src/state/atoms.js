@@ -23,8 +23,13 @@ export const gameState = atom({
     storyteller: null,
     storyCard: null,
     submittedCards: [],
-    votes: {}
+    votes: {},
 }
+});
+
+export const userRegistryState = atom({
+  key:'usersRegistryState',
+  default:{}
 });
 
 export const playerState = atom({

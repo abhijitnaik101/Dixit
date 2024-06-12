@@ -39,7 +39,7 @@ const RoomSetup = () => {
     };
 
     return (
-        <div className='p-5 w-2/3 sm:w-max bg-gradient-to-b from-violet-600 to-indigo-800 border-2 rounded-lg border-black flex flex-col justify-center items-center'>
+        <div className='p-5 w-2/3 sm:w-80 bg-gradient-to-b from-violet-600 to-indigo-800 border-2 rounded-lg border-black flex flex-col justify-center items-center'>
             <div className='w-full flex flex-col '>
                 <input
                     type="text"
@@ -57,9 +57,9 @@ const RoomSetup = () => {
                 />
             </div>
 
-            <div className='flex w-full justify-evenly '>
-                <button onClick={createRoom} className='p-2 w-32 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Create Room</button>
-                <button onClick={joinRoom} className='p-2 w-32 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Join Room</button>
+            <div className='flex w-full justify-evenly'>
+                <button onClick={createRoom} className='mr-1 p-2 w-1/2 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Create Room</button>
+                <button onClick={joinRoom} className=' p-2 w-1/2 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Join Room</button>
             </div>
         </div>
 

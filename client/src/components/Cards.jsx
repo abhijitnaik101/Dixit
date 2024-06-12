@@ -7,7 +7,8 @@ import Card from "./Card";
 const Cards = ({ callback }) => {
     const [deck, setDeck] = useRecoilState(deckState);
     const [player] = useRecoilState(playerState);
-    const [card, setCard] = useState('');
+    const [card, setCard] = useState(null);
+    const type = 'characters';
     
    
     socket.on('dealCards', (cards) => {
@@ -21,13 +22,13 @@ const Cards = ({ callback }) => {
     }
 
     return (
-        <div className="h-full w-full bg-cover bg-black bg-opacity-45 backdrop-blur-sm text-white flex flex-col items-center">
-            {card && <div className="absolute -top-12 z-10 scale-[40%]"><Card card={cardData[card]}/></div>}
+        <div className="h-full w-full bg-cover rounded-md bg-black bg-opacity-45 backdrop-blur-sm text-white flex flex-col items-center">
+            {card && <div className="absolute -top-12 z-10 scale-[40%]"><Card type={type} card={card}/></div>}
             <p className="p-5 w-full">Your Card: </p>
             <div className="h-full w-11/12  md:w-3/4 flex justify-start items-end overflow-x-auto scroll-blue-sharp">
                 {
                     deck.map((card, index) =>
-                        <button key={index} onClick={() => chooseCard(card)} ><Card card={cardData[card]}/></button>
+                        <button key={index} onClick={() => chooseCard(card)} ><Card type={type} card={card}/></button>
                     )
                 }
             </div>

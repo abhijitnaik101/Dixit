@@ -1,12 +1,13 @@
 // src/components/Game.js
 import React, { useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { roomState, gameState, playerState } from '../state/atoms';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { roomState, gameState, playerState, userRegistryState, deckState } from '../state/atoms';
 import socket from '../socket';
 import Cards from './Cards';
 import Vote from './Vote';
 import Card from './Card';
 import { cardData } from '../assets/cardData';
+import Board from './Board';
 
 const Game = () => {
   const [room] = useRecoilState(roomState);
@@ -14,8 +15,9 @@ const Game = () => {
   const [player] = useRecoilState(playerState);
   const [story, setStory] = useState('');
   const [card, setCard] = useState('');
-  const [usersRegistry, setUsersRegistry] = useState([]);
-  const [roundResults, setRoundResults] = useState({});
+  const setUsersRegistry = useSetRecoilState(userRegistryState);
+  const [deck, setDeck] = useRecoilState(deckState);
+ 
 
 
   useEffect(() => {
@@ -57,9 +59,7 @@ const Game = () => {
       }));
     });
 
-    socket.on('roundResults', (scores) => {
-      setRoundResults(scores);
-    })
+    
 
     socket.on('roundEnded', (gameState) => {
       setGame(gameState);
@@ -97,6 +97,8 @@ const Game = () => {
       if (!response.success) {
         alert(response.message);
       } else {
+        const newDeck = deck.filter(item => item !== card);
+        setDeck([...newDeck]);
         setCard('');
       }
     });
@@ -108,6 +110,8 @@ const Game = () => {
       if (!response.success) {
         alert(response.message);
       } else {
+        const newDeck = deck.filter(item => item !== card);
+        setDeck([...newDeck]);
         setCard('');
       }
     });
@@ -123,54 +127,8 @@ const Game = () => {
 
           {(game.started) &&
             <div className='h-full w-full flex flex-col items-center'>
-              <div className="h-1/2 w-11/12 mb-2 bg-[url('./assets/indigoFloralbg.jpeg')] bg-contain bg-center from-[#553CCE] via-[#3F2BB6] to-[#2C2AA0] rounded-md contain-content border-2 border-white overflow-clip flex flex-col justify-center items-center text-white">
-                <p className='w-4/5 text-center text-white'>Score board</p>
-                <div className='w-4/5 h-3/5 p-5 bg-[#131974] rounded-md text-black overflow-y-scroll no-scroll'>
-                  {Object.entries(game.playersData).map(([id, score]) =>
-                    <div className='flex justify-between mb-1'>
-                      <span className='w-2/3 text-center mr-1 bg-white'>{usersRegistry[id]}</span><span className='w-1/3 text-center bg-white'>{score}</span>
-                    </div>)
-                  }
-                </div>
-                <div className='flex flex-col items-center'>
-                  <h2 className='text-base font-bold text-white underline'>riddle </h2>
-                  {game.story && <p className='px-2 rounded-md text-base text-indigo-200 italic bg-indigo-600'>{game.story}</p>}
-
-                  {/* game res modal */}
-                  {game.submittedCards.length != 0 &&
-                    <div className='absolute flex flex-col justify-center items-center h-full w-full top-0 bg-indigo-950 bg-opacity-70 backdrop-blur-sm'>
-                      <div className='flex'>
-                        {game.submittedCards.map((card, index) =>
-                          <Card key={index} card={cardData[card.card]} />
-                        )}
-                      </div>
-                      <p>choose the numbers below to vote</p>
-                    </div>
-                  }
-                  {
-                    Object.keys(roundResults).length != 0 &&
-                    <div className='absolute flex flex-col justify-center items-center h-full w-full top-0 bg-indigo-950 bg-opacity-70 backdrop-blur-sm'>
-                      <div className='flex flex-col'>
-                        {
-                          Object.entries(roundResults).map(([id, score]) =>
-                            <div>
-                              <div>
-                                {(id != game.storyteller && score == 0) && <p>{usersRegistry[id]} : Wrong</p>}
-                                {(id != game.storyteller && score == 2) && <p>{usersRegistry[id]} : Right</p>}
-                              </div>
-                              <div>
-                                {(id != game.storyteller && score == 1) && <p>{usersRegistry[id]} : Someone choose your card</p>}
-                              </div>
-                            </div>
-                          )
-                        }
-                      </div>
-                      <button onClick={() => { setRoundResults({}) }}>OK</button>
-                    </div>
-                  }
-
-                </div>
-              </div>
+              
+              <Board/> 
               {
                 (player.id == game.storyteller) ?
                   <div className='h-1/2 md:h-3/5 w-full flex flex-col justify-evenly items-center'>

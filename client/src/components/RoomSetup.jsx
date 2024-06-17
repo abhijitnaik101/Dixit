@@ -58,8 +58,8 @@ const RoomSetup = () => {
             </div>
 
             <div className='flex w-full justify-evenly'>
-                <button onClick={createRoom} className='mr-1 p-2 w-1/2 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Create Room</button>
-                <button onClick={joinRoom} className=' p-2 w-1/2 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Join Room</button>
+                <button onClick={createRoom} className='mr-1 p-2 w-1/2 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Create</button>
+                <button onClick={joinRoom} className=' p-2 w-1/2 text-white rounded-md bg-[#544BF1] hover:bg-indigo-700 font-semibold text-sm sm:text-base'>Join</button>
             </div>
         </div>
 

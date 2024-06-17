@@ -18,6 +18,7 @@ const Vote = () => {
         alert(response.message);
       }
     });
+    alert("vote submitted");
   };
   const chooseVote = (card, index) => {
     setVote(card);

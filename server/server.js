@@ -7,8 +7,8 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-//const END_POINT = "https://dixit-one.vercel.app";
-const END_POINT = 'http://localhost:5173';
+const END_POINT = "https://dixit-one.vercel.app";
+//const END_POINT = 'http://localhost:5173';
 
 
 const server = http.createServer(app);
@@ -121,7 +121,7 @@ io.on('connect', (socket) => {
         for (let playerId in players) {
             cardsDealt[players[playerId]] = shuffledCards.splice(0, numCardsPerPlayer);
         }
-        console.log(cardsDealt);
+        
         io.to(roomName).emit('dealCards', cardsDealt);
     }
 
@@ -254,6 +254,7 @@ io.on('connect', (socket) => {
 
         const finalScores = { ...scores, ...votedGuessers }
         return finalScores;
+        
     };
 
     // End the game

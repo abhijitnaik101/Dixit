@@ -13,6 +13,7 @@ const Board = () => {
     const usersRegistry = useRecoilValue(userRegistryState);
     const type = 'characters';
     useEffect(() => {
+        console.log("the storyteller:", game.storyteller);
         setStoryteller(game.storyteller);
     }, []);
 
@@ -34,7 +35,7 @@ const Board = () => {
             <p className='w-4/5 text-center text-white'>Score board</p>
             <div className="w-4/5 h-3/5 p-5 bg-gradient-to-b bg-violet-950 rounded-md text-black overflow-y-scroll no-scroll">
                 {Object.entries(game.playersData).map(([id, score]) =>
-                    <div className='flex justify-between mb-1'>
+                    <div key={id} className='flex justify-between mb-1'>
                         <span className='w-2/3 text-center mr-1 bg-white'>{usersRegistry[id]}</span><span className='w-1/3 text-center bg-white'>{score}</span>
                     </div>)
                 }
@@ -47,52 +48,51 @@ const Board = () => {
                 {/* game res modal */}
                 {game.submittedCards.length != 0 &&
                     <div className='absolute flex flex-col justify-center items-center h-full w-full top-0 bg-indigo-950 bg-opacity-70 backdrop-blur-sm'>
-                        <div className='flex'>
+                        <div className='flex justify-start w-full overflow-x-scroll no-scroll'>
                             {game.submittedCards.map((card, index) =>
-                                <Card key={index} type={type} card={card.card} />
+                                <div><Card key={index} type={type} card={card.card} /></div>
                             )}
                         </div>
                         <p>choose the numbers below to vote</p>
                     </div>
                 }
                 {
-                    Object.keys(roundResults).length != 0 &&
+                    Object.keys(roundResults).length !== 0 &&
                     <div className='absolute flex flex-col justify-center items-center h-full w-full top-0 bg-indigo-950 bg-opacity-85 backdrop-blur-sm'>
                         <div className='flex flex-col w-3/4 items-center'>
                             {
                                 Object.entries(roundResults).map(([id, obj]) =>
-                                    <div className="w-max">
+                                    <div key={id} className="w-max">
                                         {
                                             (!obj.storyteller && obj.score === 0) &&
-                                            <p><IoPerson className="pb-1 inline text-xl text-indigo-500" />{usersRegistry[id]} : <IoCloseCircle className="inline text-3xl text-red-500" /> <span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                            <p>{usersRegistry[id]} : <IoCloseCircle className="inline text-3xl text-red-500" /> <span className="text-xl font-bold text-white">+{obj.score}</span></p>
                                         }
 
                                         {
                                             (!obj.storyteller && obj.score === 2) &&
-                                            <p><IoPerson className="pb-1 inline text-xl text-indigo-500" />{usersRegistry[id]} : <IoCheckmarkCircle className="inline text-3xl text-green-500" /> <span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                            <p>{usersRegistry[id]} : <IoCheckmarkCircle className="inline text-3xl text-green-500" /> <span className="text-xl font-bold text-white">+{obj.score}</span></p>
                                         }
 
                                         {
                                             (!obj.storyteller && obj.score === 1) &&
-                                            <div>
-                                                <p><IoPerson className="pb-1 inline text-xl text-indigo-500" />{usersRegistry[id]} : <IoCloseCircle className="inline text-3xl text-red-500" /></p>
-                                                <p><IoPerson className="pb-1 placeholder:inline text-xl text-indigo-500" />{usersRegistry[id]} : your card was choosen <IoCheckbox className="inline text-3xl text-yellow-400" /><span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                            <div className="flex flex-col items-center">
+                                                <p>{usersRegistry[id]} : <IoCloseCircle className="inline text-3xl text-red-500" /><span className="text-xl font-bold text-white"> +0 </span></p>
+                                                <p>{usersRegistry[id]} : card choosen <IoCheckbox className="inline text-3xl text-yellow-400" /><span className="text-xl font-bold text-white">+{obj.score}</span></p>
                                             </div>
                                         }
 
                                         {
                                             (!obj.storyteller && obj.score === 3) &&
-                                            <div>
-                                                <p><IoPerson className="pb-1 inline text-xl text-indigo-500" />{usersRegistry[id]} : <IoCheckmarkCircle className="inline text-3xl text-green-500" /></p>
-                                                <p><IoPerson className="pb-1 inline text-xl text-indigo-500" />{usersRegistry[id]} : your card was choosen <IoCheckbox className="inline text-3xl text-yellow-400" /><span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                            <div className="flex flex-col items-center">
+                                                <p>{usersRegistry[id]} : <IoCheckmarkCircle className="inline text-3xl text-green-500" /></p>
+                                                <p>{usersRegistry[id]} : card choosen <IoCheckbox className="inline text-3xl text-yellow-400" /><span className="text-xl font-bold text-white">+{obj.score}</span></p>
                                             </div>
                                         }
-
-
                                     </div>
                                 )
                             }
-                            <div className="m-2">Story teller scored : +{roundResults[storyteller].score}</div>
+                            {console.log("score :",roundResults[storyteller], storyteller, roundResults)}
+                            
                         </div>
                         
                         <button onClick={OKbutton} className="border-2 border-white py-1 px-3 rounded-lg hover:bg-white hover:bg-opacity-25">OK</button>

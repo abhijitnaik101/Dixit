@@ -7,8 +7,8 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-const END_POINT = "https://dixit-one.vercel.app";
-//const END_POINT = 'http://localhost:5173';
+//const END_POINT = "https://dixit-one.vercel.app";
+const END_POINT = 'http://localhost:5173';
 
 
 const server = http.createServer(app);
@@ -68,6 +68,8 @@ io.on('connect', (socket) => {
 
     // Join room event
     socket.on('joinRoom', (roomName, playerName, callback) => {
+        if(rooms[roomName] && rooms[roomName].gameState.started) 
+            callback({success:false, message:"Game has already started"})
         if (rooms[roomName]) {
             rooms[roomName].players.push(socket.id);
             rooms[roomName].names.push(playerName);
@@ -86,6 +88,7 @@ io.on('connect', (socket) => {
         const userRegistry = {};
         const room = rooms[roomName];
         if (room && room.players.length >= 3) {
+            rooms[roomName].gameState.started = true;
             room.gameState.started = true;
             room.players.forEach((key, index) => {
                 userRegistry[key] = room.names[index];

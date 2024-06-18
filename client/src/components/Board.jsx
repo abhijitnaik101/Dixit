@@ -59,43 +59,47 @@ const Board = () => {
                 {
                     Object.keys(roundResults).length !== 0 &&
                     <div className='absolute flex flex-col justify-center items-center h-full w-full top-0 bg-indigo-950 bg-opacity-85 backdrop-blur-sm'>
-                        <div className='flex flex-col w-3/4 items-center'>
+                        <div className='flex flex-col h-3/5 w-3/4 items-start overflow-y-scroll no-scroll'>
                             {
                                 Object.entries(roundResults).map(([id, obj]) =>
                                     <div key={id} className="w-max">
                                         {
                                             (!obj.storyteller && obj.score === 0) &&
-                                            <p>{usersRegistry[id]} : <IoCloseCircle className="inline text-3xl text-red-500" /> <span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                            <p>{usersRegistry[id]} :<IoCloseCircle className="inline text-3xl text-red-500" /><span className="text-xl font-bold text-white"> 0 </span></p>
                                         }
 
                                         {
                                             (!obj.storyteller && obj.score === 2) &&
-                                            <p>{usersRegistry[id]} : <IoCheckmarkCircle className="inline text-3xl text-green-500" /> <span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                            <p>{usersRegistry[id]} :<IoCheckmarkCircle className="inline text-3xl text-green-500" /><span className="text-xl font-bold text-white"> +2 </span></p>
                                         }
 
                                         {
                                             (!obj.storyteller && obj.score === 1) &&
                                             <div className="flex flex-col items-center">
-                                                <p>{usersRegistry[id]} : <IoCloseCircle className="inline text-3xl text-red-500" /><span className="text-xl font-bold text-white"> +0 </span></p>
-                                                <p>{usersRegistry[id]} : card choosen <IoCheckbox className="inline text-3xl text-yellow-400" /><span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                                <p>{usersRegistry[id]} : 
+                                                 <IoCloseCircle className="inline text-3xl text-red-500" />
+                                                 <IoCheckbox className="inline text-3xl text-yellow-400" />
+                                                 <span className="text-xl font-bold text-white"> +1 </span></p>
                                             </div>
                                         }
 
                                         {
                                             (!obj.storyteller && obj.score === 3) &&
                                             <div className="flex flex-col items-center">
-                                                <p>{usersRegistry[id]} : <IoCheckmarkCircle className="inline text-3xl text-green-500" /></p>
-                                                <p>{usersRegistry[id]} : card choosen <IoCheckbox className="inline text-3xl text-yellow-400" /><span className="text-xl font-bold text-white">+{obj.score}</span></p>
+                                                <p>{usersRegistry[id]} : 
+                                                 <IoCheckmarkCircle className="inline text-3xl text-green-500" />
+                                                 <IoCheckbox className="inline text-3xl text-yellow-400" />
+                                                 <span className="text-xl font-bold text-white"> +3 </span></p>
                                             </div>
                                         }
                                     </div>
                                 )
                             }
-                            {console.log("score :",roundResults[storyteller], storyteller, roundResults)}
+                            
                             
                         </div>
                         
-                        <button onClick={OKbutton} className="border-2 border-white py-1 px-3 rounded-lg hover:bg-white hover:bg-opacity-25">OK</button>
+                        <button onClick={OKbutton} className="m-2 border-2 border-white py-1 px-3 rounded-lg hover:bg-white hover:bg-opacity-25">OK</button>
                     </div>
                 }
             </div>

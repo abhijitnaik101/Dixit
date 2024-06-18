@@ -1,24 +1,30 @@
 // src/components/Vote.js
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { gameState, roomState } from '../state/atoms';
 import socket from '../socket';
 
 const Vote = () => {
   const [room] = useRecoilState(roomState);
-  const [game] = useRecoilState(gameState);
+  const game = useRecoilValue(gameState);
   const [vote, setVote] = useState('');
   const [cardNumber, setCardNumber] = useState(0);
-  const [displayVote, setDisplayVote] = useState(false);
+  const [submited, setSubmited] = useState(false);
+
+  useEffect(()=>{
+    setCardNumber(0);
+    setVote('');
+    setSubmited(false);
+  }, [game.storyteller])
 
   const submitVote = () => {
-    setDisplayVote(true);
+    setSubmited(true);
     socket.emit('voteCard', room, vote, (response) => {
       if (!response.success) {
         alert(response.message);
       }
     });
-    alert("vote submitted");
+    //alert("vote submitted");
   };
   const chooseVote = (card, index) => {
     setVote(card);
@@ -40,7 +46,7 @@ const Vote = () => {
                 <button key={index} onClick={() => chooseVote(card.card, index + 1)} className='mx-1 h-10 w-10 rounded-lg bg-indigo-500 flex justify-center items-center hover:bg-indigo-600 text-white'>{index + 1}</button>
               ))}
             </div>
-            <button onClick={submitVote} className='px-5 h-10 border-2 border-black bg-orange-500 hover:bg-orange-600'>Submit</button>
+            <button onClick={submitVote} className='px-5 h-10 border-2 border-black bg-orange-500 hover:bg-orange-600'>{submited ? 'submited':'submit'}</button>
           </div>
       }
     </div>

@@ -100,6 +100,7 @@ const Game = () => {
         const newDeck = deck.filter(item => item !== card);
         setDeck([...newDeck]);
         setCard('');
+        setStory('');
       }
     });
   };

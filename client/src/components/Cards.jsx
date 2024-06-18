@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { deckState, playerState } from "../state/atoms";
-import { useRecoilState } from "recoil";
+import { deckState, gameState, playerState } from "../state/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 import socket from "../socket";
 import { cardData } from "../assets/cardData";
 import Card from "./Card";
 const Cards = ({ callback }) => {
+    
+    const game = useRecoilValue(gameState);
     const [deck, setDeck] = useRecoilState(deckState);
     const [player] = useRecoilState(playerState);
     const [card, setCard] = useState(null);
     const type = 'characters';
+
+    useEffect(()=> setCard(null), [game.storyteller])
     
    
     socket.on('dealCards', (cards) => {

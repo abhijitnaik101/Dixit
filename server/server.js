@@ -162,7 +162,7 @@ io.on('connect', (socket) => {
     socket.on('submitStory', (roomName, story, storyCard, callback) => {
         const room = rooms[roomName];
         const gameState = room.gameState;
-        if (gameState.storyteller === socket.id && storyCard != '') {
+        if (gameState.storyteller === socket.id && storyCard && story) {
             gameState.story = story;
             gameState.storyCard = storyCard;
             io.to(roomName).emit('newStory', { story, storyteller: socket.id, storyCard });

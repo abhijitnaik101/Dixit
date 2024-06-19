@@ -13,9 +13,9 @@ const Board = () => {
     const usersRegistry = useRecoilValue(userRegistryState);
     const type = 'characters';
     useEffect(() => {
-        console.log("the storyteller:", game.storyteller);
+        if(game.storyteller && !storyteller)
         setStoryteller(game.storyteller);
-    }, []);
+    }, [game.storyteller]);
 
     function OKbutton() {
         setRoundResults({});
@@ -53,7 +53,8 @@ const Board = () => {
                                 <div><Card key={index} type={type} card={card.card} /></div>
                             )}
                         </div>
-                        <p>choose the numbers below to vote</p>
+                        {socket.id == game.storyteller ? <p>Waiting for guessers</p>: <p>choose the numbers below to vote</p>}
+                        
                     </div>
                 }
                 {
@@ -96,7 +97,9 @@ const Board = () => {
                                 )
                             }
                             
-                            
+                            <div>
+                                {roundResults[storyteller] && <p>{usersRegistry[storyteller]} : +{roundResults[storyteller].score}</p>}
+                            </div>
                         </div>
                         
                         <button onClick={OKbutton} className="m-2 border-2 border-white py-1 px-3 rounded-lg hover:bg-white hover:bg-opacity-25">OK</button>

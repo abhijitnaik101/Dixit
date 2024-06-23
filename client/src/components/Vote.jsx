@@ -18,10 +18,15 @@ const Vote = () => {
   }, [game.storyteller])
 
   const submitVote = () => {
-    setSubmited(true);
+    if(!vote && !cardNumber){
+      alert("Choose a card number.");
+      return;
+    }
     socket.emit('voteCard', room, vote, (response) => {
       if (!response.success) {
         alert(response.message);
+      }else{
+        setSubmited(true);
       }
     });
     //alert("vote submitted");

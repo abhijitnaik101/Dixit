@@ -18,6 +18,8 @@ const Game = () => {
   const setUsersRegistry = useSetRecoilState(userRegistryState);
   const [deck, setDeck] = useRecoilState(deckState);
   const [submissionStatus, setSubmissionStatus] = useState({storySubmitted:false, cardSubmitted:false});
+  const [cardsType, setCardsType] = useState('');
+
   useEffect(()=>{
     setSubmissionStatus({storySubmitted:false, cardSubmitted:false});
     setStory('');
@@ -92,6 +94,10 @@ const Game = () => {
   }, [setGame]);
 
   const startGame = () => {
+    if(!cardsType){
+      alert("Select the category");
+      return;
+    }
     socket.emit('startGame', room, (response) => {
       if (!response.success) {
         alert(response.message);
@@ -143,7 +149,13 @@ const Game = () => {
       <div className='h-full w-full flex flex-col justify-between font-mono'>
         <div className='h-full flex flex-col justify-center items-center'>
           {(!game.started) && (
-            <button onClick={startGame} className='relative p-2 w-32 text-white border-2 border-black rounded-md bg-indigo-500 hover:bg-indigo-600 font-semibold text-sm sm:text-base animate-bounce'>Start Game</button>
+            <div className='w-full flex flex-col items-center'>
+              <button onClick={startGame} className='relative m-5 p-2 w-32 text-white border-2 border-black rounded-md bg-indigo-500 hover:bg-indigo-600 font-semibold text-sm sm:text-base animate-bounce'>Start Game</button>
+              <div>
+                <p className='px-5 text-white font-bold my-3'>{cardsType}</p>
+                <button className='py-2 px-5 border-b-2 border-black bg-purple-600 hover:bg-purple-700 rounded-lg text-white' onClick={() => setCardsType('characters')}>characters</button>
+              </div>
+            </div>
           )}
 
           {(game.started) &&
@@ -153,21 +165,21 @@ const Game = () => {
               {
                 (player.id == game.storyteller) 
                 ?
-                  <div className='h-1/2 md:h-3/5 w-full flex flex-col justify-evenly items-center'>
+                  <div className='h-2/5 md:h-3/5 w-full flex flex-col justify-evenly items-center'>
                     <div className='flex h-10 w-full justify-center'>
                       <input type="text" value={story} onChange={(e) => setStory(e.target.value)} placeholder="Story"
                         className='p-2 px-4 w-4/5' />
-                      <button onClick={submitStory} className='h-10 w-20  bg-indigo-600 border-2 border-black hover:bg-indigo-700 text-white'>Send</button>
+                      <button onClick={submitStory} className='h-10 w-1/5 bg-indigo-600 border-2  hover:bg-indigo-700 text-white'>Send</button>
                     </div>
                     <Cards callback={setCard} />
                   </div>
                   :
-                  <div className='h-1/2 md:h-3/5 w-full flex flex-col justify-evenly items-center'>
-                    <div className='h-max w-full bg-orange-500'>
+                  <div className='relative h-2/5 md:h-3/5 w-full flex flex-col justify-evenly items-center'>
+                    <div className='z-10 h-max w-full bg-orange-500 '>
                       {game.started && <Vote />}
                     </div>
-                    <div className='w-full flex justify-center bg-indigo-950'>
-                      {(card != '' && game.story != '' && game.submittedCards.length == 0 && !submissionStatus.cardSubmitted) && <button onClick={submitCard} className='p-2 rounded-lg border-2 border-black bg-indigo-500 hover:bg-indigo-600 text-white'>Submit Card</button>}
+                    <div className='absolute top-6 right-0 z-10 flex justify-center'>
+                      {(card != '' && game.story != '' && game.submittedCards.length == 0 && !submissionStatus.cardSubmitted) && <button onClick={submitCard} className='h-20 w-20 shadow-lg shadow-black rounded-bl-3xl bg-indigo-900 hover:bg-indigo-950 text-white'>OK</button>}
                     </div>
                     <Cards callback={setCard} />
                   </div>

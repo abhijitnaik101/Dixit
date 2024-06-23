@@ -30,24 +30,25 @@ const Board = () => {
     //bg-[url('./assets/vectorSpace2.jpeg')]
     //from-[#553CCE] via-[#3F2BB6] to-[#2C2AA0]
     //bg-gradient-to-b from-[#131974] to-violet-900
+    //bg-center bg-cover bg-[url('./assets/desertDay1.jpeg')] contain-content
     return (
-        <div className="h-1/2 w-11/12 mb-2 lg: bg-center bg-cover bg-[url('./assets/desertDay1.jpeg')]  rounded-md contain-content border-2 border-white overflow-clip flex flex-col justify-center items-center text-white">
+        <div className="z-10 relative h-3/5 w-full bg-gradient-to-b from-indigo-500 to-purple-500 overflow-clip flex flex-col justify-center items-center text-white">
             <p className='w-4/5 text-center text-white'>Score board</p>
-            <div className="w-4/5 h-3/5 p-5 bg-gradient-to-b bg-violet-950 rounded-md text-black overflow-y-scroll no-scroll">
+            <div className="w-4/5 h-3/5 p-5 bg-cover bg-indigo-900 rounded-md text-black overflow-y-scroll no-scroll">
                 {Object.entries(game.playersData).map(([id, score]) =>
                     <div key={id} className='flex justify-between mb-1'>
-                        <span className='w-2/3 text-center mr-1 bg-white'>{usersRegistry[id]}</span><span className='w-1/3 text-center bg-white'>{score}</span>
+                        <span className='w-2/3 text-center mr-1 bg-indigo-500 text-white'>{usersRegistry[id]}</span><span className='w-1/3 text-center bg-indigo-500 text-white'>{score}</span>
                     </div>)
                 }
             </div>
 
             <div className='flex flex-col items-center'>
                 <h2 className='text-base font-bold text-white underline'>riddle </h2>
-                {game.story && <p className='px-2 rounded-md text-base text-black italic bg-yellow-400'>{game.story}</p>}
+                {game.story && <p className='px-2 rounded-md text-base text-black italic bg-purple-300'>{game.story}</p>}
 
                 {/* game res modal */}
                 {game.submittedCards.length != 0 &&
-                    <div className='absolute flex flex-col justify-center items-center h-full w-full top-0 bg-indigo-950 bg-opacity-70 backdrop-blur-sm'>
+                    <div className='absolute flex flex-col justify-center items-center h-full w-full z-20 top-0 bg-indigo-950 bg-opacity-70 backdrop-blur-sm'>
                         <div className='flex justify-start w-full overflow-x-scroll no-scroll'>
                             {game.submittedCards.map((card, index) =>
                                 <div><Card key={index} type={type} card={card.card} /></div>
